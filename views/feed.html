@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Access Key Manager</title>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+        <link rel="stylesheet" href="../public/css/feed.css">
+    </head>
+    <body>
+        <div id="overlay">
+            <div id="modal">
+                <form id="keypurcha" action="">
+                    <div>
+                        <input id="title" placeholder="Title" type="text">
+                    </div>
+                    <div>
+                        <input id="description" placeholder="Description" type="text">
+                    </div>
+                    <div>
+                        <input type="file" name="file" id="file">
+                    </div>
+                    <div>
+                        <button type="submit" id="upload_btn">purchase</button>
+                        <button id="cancel_btn" onclick="closeModal()">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <header>
+            <nav class="navbar">
+                <a href="#" class="logo">AKM</a>
+
+                <ul class="nav-menu">
+                    <li class='nav-item'>
+                        <a class='nav-link' href="./feed.html">Home</a>
+                    </li>
+
+                    <li class='nav-item' onclick="showModal()">
+                        <a class='nav-link'>Request Key</a>
+                    </li>
+
+                    <li class='nav-item'>
+                        <a class='nav-link' href="./index.html">Logout</a>
+                    </li>
+                </ul>
+
+                <div class="menu-btn">
+                    <span class="menu-item"></span>
+                    <span class="menu-item"></span>
+                    <span class="menu-item"></span>
+                </div>
+               
+            </nav>
+        </header>
+
+        <section id="search_section">
+            <form id="serach_form" action="">
+                <input id="search_input" type="email" placeholder="Search User Active Key | Enter Email">
+                <button id="search_btn">Search </button>
+            </form>
+        </section>
+
+
+
+
+
+        <div id="grid" class="grid">
+                
+
+        </div>
+
+
+        <div id="search_grid" class="grid">
+
+        </div>
+    </body>
+    <script src = "../public/scripts/feed.js"></script>
+</html> 
