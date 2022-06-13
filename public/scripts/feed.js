@@ -16,10 +16,17 @@ function changeBg(button){
     if(button.id == "active"){
         button.style.background = "white";
         document.getElementById("expired").style.background = "rgb(212, 209, 209)";
+        document.getElementById("revoked").style.background = "rgb(212, 209, 209)";
     }
     else if(button.id == "expired") { 
         button.style.background = "white";
         document.getElementById("active").style.background = "rgb(212, 209, 209)";
+        document.getElementById("revoked").style.background = "rgb(212, 209, 209)";
+    }
+    else {
+        button.style.background = "white";
+        document.getElementById("active").style.background = "rgb(212, 209, 209)";
+        document.getElementById("expired").style.background = "rgb(212, 209, 209)";
     }
 }
 
@@ -38,6 +45,11 @@ function getParamenter(parameterName) {
     let parameters = new URLSearchParams(window.location.search);
     return parameters.get(parameterName);
 }
+
+
+var keyList =[];
+
+
 
 // Get all files
 $(document).ready(function () {
@@ -58,26 +70,10 @@ $(document).ready(function () {
         
     // }
     $.ajax({
-        url: '/allFiles',
+        url: '/allkeys',
         type: 'GET',
-        success: function(files) {
-            console.log(files);
-            let grid = $('#grid');
-            let gridContent = "";
-            files.forEach(file => {
-                gridContent = `
-                <div id="row" class="row">
-                    <div id="action_field" class="action_field">
-                    <b id="${file.fileId}" class="download_btn" onclick="download(this.id)">Download</b>
-                    <b id="${file.fileId}" class="send_email" onclick="fileToEmail(this.id)">Email</b>
-                    </div>
-                    <div id="title_field" class="title_field">${file.title}</div>
-                    <div id="file_name_${file.fileId}" onclick="DownloadEmailCount(this.id)" class="file_name_field">${file.fileName}</div>
-                    <div id="description_field" class="description_field">${file.description}</div>
-                </div>
-                `;
-                grid.append(gridContent);
-            });
+        success: function(rows) {
+            keyList = rows;
 
         },
         error: function (err) {
@@ -116,32 +112,24 @@ $('#keypurchaseform').submit(function (e) {
 $('#search_btn').click(function (e) {
     e.preventDefault();
     let keyInfo = {
-        search: $('#search_input').val()
+        email: $('#search_input').val()
     }
-    $("#grid").html("");
     $.ajax({
         url: '/keySearch',
-        type: 'POST',
+        type: 'GET',
         data: JSON.stringify(keyInfo),
         dataType: 'json',
         contentType: "application/json",
-        success: function(key) {
+        success: function(rows) {
 
-            if (key) {
-                let grid = $('#grid');
-                let gridContent = "";
-                gridContent = `
-                    <div id="row" class="row">
-                        <div id="action_field" class="action_field"><p id="download_btn${file.fileId}" class="download_btn">Download</p>
-                        <p id="${file.fileId}" class="send_email" onclick="fileToEmail(this.id)">Email</p></div>
-                        <div id="title_field" class="title_field">${file.title}</div>
-                        <div id="file_name_field" class="file_name_field" onclick="fileDownloadEmailCount(this.id)">${file.fileName}</div>
-                        <div id="description_field" class="description_field">${file.description}</div>
-                    </div>
-                    `;
-                grid.append(gridContent);
+
+            if (rows) {
+               var activeKey = rows.filter((row) => {
+                return row.keyStatus === "active";
+               });
+               alert(`Status Code: 200.\n ${activeKey}`);
             }else{
-                alert("School has no active Key");
+                alert("Status Code: 404.\n User has no active Key");
             }
 
         },
@@ -150,5 +138,28 @@ $('#search_btn').click(function (e) {
         }
     })
 });
+
+
+
+$('#active').click(function (e) {
+    e.preventDefault();
+    
+});
+
+
+
+$('#expired').click(function (e) {
+    e.preventDefault();
+    
+});
+
+
+
+$('#revoked').click(function (e) {
+    e.preventDefault();
+    
+});
+
+
 
 

@@ -70,6 +70,11 @@ a {
     background-color: white;
 }
 
+#search_btn:active {
+    background-color: #6cb5c2;
+}
+
+
 @media (max-width: 2768px){
     .menu-btn {
         display: block;
@@ -265,6 +270,19 @@ main {
 
 .keys:hover {
     background-color: white;
+}
+
+@media (max-width: 720px){
+    #search_input{
+        width: 300px;
+        height: 25px;
+        border-radius: 30px;
+        margin-top: 20px;
+        margin-left: 300px;
+        padding-left: 20px;
+        font-size: 20px;
+        
+    }
 }
 
 

@@ -6,10 +6,10 @@ const db = new sqlite3.Database("./accessKeys.db", sqlite3.OPEN_READWRITE, (err)
     console.log("Database connection successful");
 })
  //Create users table
- db.run('CREATE TABLE users ("userId"	INTEGER NOT NULL, "email"	TEXT,"password"	TEXT,PRIMARY KEY("userId" AUTOINCREMENT))');
+ //db.run('CREATE TABLE users ("userId"	INTEGER NOT NULL, "email"	TEXT,"password"	TEXT, "userRole" TEXT, PRIMARY KEY("userId" AUTOINCREMENT))');
 
  //Create Keys table
- db.run('CREATE TABLE "keys" ("keyId"	INTEGER NOT NULL,"keyValue"	TEXT,"purchase_Date"	TEXT,"expiry_Date"	TEXT,"purchasedBy"	INTEGER,FOREIGN KEY("purchasedBy") REFERENCES "users"("userId"),PRIMARY KEY("keyId" AUTOINCREMENT))');
+ //db.run('CREATE TABLE "keys" ("keyId"	INTEGER NOT NULL,"keyValue"	TEXT,"purchase_Date"	TEXT,"expiry_Date"	TEXT,"purchasedBy"	INTEGER, "keyStatus" TEXT, FOREIGN KEY("purchasedBy") REFERENCES "users"("userId"),PRIMARY KEY("keyId" AUTOINCREMENT))');
 
  //Create emails table
  //db.run('CREATE TABLE "emails" ("emailId"	INTEGER NOT NULL,"emailFile"	INTEGER,PRIMARY KEY("emailId" AUTOINCREMENT),FOREIGN KEY("emailFile") REFERENCES "files"("fileId"))');
