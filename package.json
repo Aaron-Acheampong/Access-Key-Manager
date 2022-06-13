@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Aaron-Acheampong/Access-Key-Manager/issues"
   },
-  "homepage": "https://github.com/Aaron-Acheampong/Access-Key-Manager#readme"
+  "homepage": "https://github.com/Aaron-Acheampong/Access-Key-Manager#readme",
+  "dependencies": {
+    "sqlite3": "^5.0.8"
+  }
 }

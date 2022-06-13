@@ -12,6 +12,17 @@ document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', 
 }))
 
 
+function changeBg(button){
+    if(button.id == "active"){
+        button.style.background = "white";
+        document.getElementById("expired").style.background = "rgb(212, 209, 209)";
+    }
+    else if(button.id == "expired") { 
+        button.style.background = "white";
+        document.getElementById("active").style.background = "rgb(212, 209, 209)";
+    }
+}
+
 
 
 function showModal() {
@@ -40,7 +51,7 @@ $(document).ready(function () {
     if (userRole === 'admin'){
         // $("#show_modal_btn").css("display") = "block";
         // document.getElementById("show_modal_btn").style.display = "block";
-        $("#show_modal_btn").css("display","block");
+        $("#serach_form").css("display","block");
 
     }
     // else {

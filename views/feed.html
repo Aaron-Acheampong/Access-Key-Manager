@@ -11,7 +11,7 @@
     <body>
         <div id="overlay">
             <div id="modal">
-                <form id="keypurcha" action="">
+                <form id="keypurchaseform" action="">
                     <div>
                         <input id="title" placeholder="Title" type="text">
                     </div>
@@ -32,7 +32,11 @@
 
         <header>
             <nav class="navbar">
-                <a href="#" class="logo">AKM</a>
+                <div>
+                    <img id="logo" src="../public/images/key_logo.png">
+                    <a href="#" class="logo">AKM</a>
+                </div>
+                
 
                 <ul class="nav-menu">
                     <li class='nav-item'>
@@ -40,7 +44,7 @@
                     </li>
 
                     <li class='nav-item' onclick="showModal()">
-                        <a class='nav-link'>Request Key</a>
+                        <a class='nav-link'>Purchase Key</a>
                     </li>
 
                     <li class='nav-item'>
@@ -57,12 +61,26 @@
             </nav>
         </header>
 
+       <div id="base">
         <section id="search_section">
             <form id="serach_form" action="">
                 <input id="search_input" type="email" placeholder="Search User Active Key | Enter Email">
                 <button id="search_btn">Search </button>
             </form>
         </section>
+
+        <main>
+            <section id="keylist">
+                <button class="keys" id="active" onclick="changeBg(this);">Active</button>
+                <button class="keys" id="expired" onclick="changeBg(this);">Expired</button>
+            </section>
+
+            <div id="grid" class="grid">
+                
+
+            </div>
+        </main>
+       </div>
 
 
 

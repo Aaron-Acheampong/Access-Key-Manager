@@ -1,6 +1,6 @@
 # File Server
 > Creating a site for distribution of documents.
-> Live demo [_here_](https://fileserver-amalitech.herokuapp.com/). <!-- If you have the project hosted somewhere, include the link here. -->
+> Live demo [_here_](https://AccessKeyManager.herokuapp.com/). <!-- If you have the project hosted somewhere, include the link here. -->
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -12,13 +12,13 @@
 
 
 ## General Information
-- Creating a site for distribution of documents likes of wedding cards, admission forms, etc.
-- The purpose of this project is to help accessing and downloading documents remotely easily.
+- A site to monetize the distribution of access Keys to a common playform
+- 
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
 ## Technologies Used
-- Node - version 14.18.1
+- Node - version 16.14.0
 - SQlite 
 
 
@@ -40,5 +40,5 @@ Give credit here.
 - Many thanks to the team and Amalitch team.
 
 ## Contact
-Created by Isaac Ampomah, Aaron Acheampong and Emmanuel Eshun
+Created by Aaron Acheampong
 
