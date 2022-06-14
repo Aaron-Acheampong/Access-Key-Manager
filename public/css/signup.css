@@ -1,14 +1,14 @@
 body {
-    background-image: url("C:/Users/TECHNICAL/Desktop/C++Dev/JS/Access-Key-Manager/public/images/key.png");
+   /*background-image: url("C:/Users/TECHNICAL/Desktop/C++Dev/JS/Access-Key-Manager/public/images/key.png");*/
     /*background-size: cover;*/
-    /*background-color: #06454d;*/
+    background-color: #2c9dca;
 }
 
 #signup_form_div {
     border: 2px solid white;
     width: 700px;
     height: 400px;
-    background-color: #012F34;
+    background-color: #134e68;
     margin-top: 250px;
     margin-left: 550px;
     border-radius: 30px;
