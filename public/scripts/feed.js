@@ -32,6 +32,7 @@ function changeBg(button){
 
 
 
+
 function showModal() {
     document.getElementById("overlay").style.display = "block";
 }
@@ -56,7 +57,7 @@ $(document).ready(function () {
     
 
     let userRole = getParamenter('userRole'); 
-    // let userId = getParamenter('userId'); 
+    let userEmail = getParamenter('userEmail'); 
 
     console.log(userRole);
     // console.log(userId);
@@ -73,7 +74,14 @@ $(document).ready(function () {
         url: '/allkeys',
         type: 'GET',
         success: function(rows) {
-            keyList = rows;
+            if (userRole === 'admin') {
+                keyList = rows;
+            } else {
+                keyList = rows.filter((row) => {
+                    row.email === userEmail;
+                })
+            }
+            
 
         },
         error: function (err) {
@@ -143,13 +151,102 @@ $('#search_btn').click(function (e) {
 
 $('#active').click(function (e) {
     e.preventDefault();
-    
+
+    let grid = $('#grid');
+    let gridContent = `<div className='contain-table'>
+    <table className='striped-table'>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Key ID</th>
+                <th>User ID</th>
+                <th>Email</th>
+                <th>Key Value</th>
+                <th>Purchase Date</th>
+                <th>Expiry Date</th>
+                <th colSpan={1} className='text-center'>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            ${keyList.length > 0  ? (
+                keyList.map((keyItem, i) => (
+                    keyItem.keyStatus === 'active' ? 
+                    `<tr key={keyItem.keyId}>
+                        <td>{i + 1}</td>
+                        <td>{keyItem.keyId}</td>
+                        <td>{keyItem.userId}</td>
+                        <td>{keyItem.email}</td>
+                        <td>{keyItem.keyValue}</td>
+                        <td>{keyItem.expiry_Date}</td>
+                        <td>{keyItem.keyStatus}</td>
+                        <td className='text-left'>
+                            <button 
+                                onClick={() => handleRevoke(keyItem.keyId)}
+                                className='button muted-button'
+                            >Revoke key</button>
+                        </td>
+                    </tr>` : null
+                ))
+            ) : (
+                <tr>
+                    <td colSpan={7}>No keyItems</td>
+                </tr>
+            )}
+        </tbody>
+    </table>
+</div>`;
+
+   
+    grid.append(gridContent);
 });
 
 
 
 $('#expired').click(function (e) {
     e.preventDefault();
+
+    let grid = $('#grid');
+    let gridContent = `<div className='contain-table'>
+    <table className='striped-table'>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Key ID</th>
+                <th>User ID</th>
+                <th>Email</th>
+                <th>Key Value</th>
+                <th>Purchase Date</th>
+                <th>Expiry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${keyList.length > 0  ? (
+                keyList.map((keyItem, i) => (
+                    keyItem.keyStatus === 'expired' ? 
+                    `<tr key={keyItem.keyId}>
+                        <td>{i + 1}</td>
+                        <td>{keyItem.keyId}</td>
+                        <td>{keyItem.userId}</td>
+                        <td>{keyItem.email}</td>
+                        <td>{keyItem.keyValue}</td>
+                        <td>{keyItem.expiry_Date}</td>
+                        <td>{keyItem.keyStatus}</td>
+                        </td>
+                    </tr>` : null
+                ))
+            ) : (
+                <tr>
+                    <td colSpan={7}>No keyItems</td>
+                </tr>
+            )}
+        </tbody>
+    </table>
+</div>`;
+
+   
+    grid.append(gridContent);
     
 });
 
@@ -157,8 +254,79 @@ $('#expired').click(function (e) {
 
 $('#revoked').click(function (e) {
     e.preventDefault();
+
+    let grid = $('#grid');
+    let gridContent = `<div className='contain-table'>
+    <table className='striped-table'>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Key ID</th>
+                <th>User ID</th>
+                <th>Email</th>
+                <th>Key Value</th>
+                <th>Purchase Date</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${keyList.length > 0  ? (
+                keyList.map((keyItem, i) => (
+                    keyItem.keyStatus === 'revoked' ? 
+                    `<tr key={keyItem.keyId}>
+                        <td>{i + 1}</td>
+                        <td>{keyItem.keyId}</td>
+                        <td>{keyItem.userId}</td>
+                        <td>{keyItem.email}</td>
+                        <td>{keyItem.keyValue}</td>
+                        <td>{keyItem.purchase_Date}</td>
+                        <td>{keyItem.expiry_Date}</td>
+                        <td>{keyItem.keyStatus}</td>
+                        </td>
+                    </tr>` : null
+                ))
+            ) : (
+                <tr>
+                    <td colSpan={7}>No keyItems</td>
+                </tr>
+            )}
+        </tbody>
+    </table>
+</div>`;
+
+   
+    grid.append(gridContent);
     
 });
+
+function handleRevoke(id, email) {
+
+    let keyInfo = {
+        keyId: id,
+        email: email
+    };
+
+    console.log(keyInfo);
+
+    $.ajax({
+        url: '/revokeKey',
+        type: 'POST',
+        data: JSON.stringify(keyInfo),
+        dataType: 'json',
+        contentType: "application/json",
+        success: (result) => {
+            console.log(result);
+            if(result) alert(`Key with ID ${id} is revoked`);
+           
+        },
+        error: (err) => {
+            console.log(err);
+        }
+
+    });
+}
+
 
 
 

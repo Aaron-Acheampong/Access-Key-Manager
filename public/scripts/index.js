@@ -17,7 +17,7 @@ $("#login_btn").click((e) => {
             if (users.length !== 0){
                 users.forEach(user => {
                 console.log(user.userRole);
-                window.location.href = `/views/feed.html?userRole=${user.userRole}`;
+                window.location.href = `/views/feed.html?userRole=${user.userRole}&userEmail=${user.email}`;
                 });
             } else {
                 alert("Invalid User");

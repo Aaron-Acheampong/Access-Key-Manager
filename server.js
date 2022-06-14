@@ -77,16 +77,16 @@ app.post('/forgotPassword', async (req, res) => {
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
-              user: 'gardner.littel10@ethereal.email', // generated ethereal user
-              pass: 'wuAQHdZaRu7Q7XcBqv', // generated ethereal password
+              user: 'melba.ratke71@ethereal.email', // generated ethereal user
+              pass: 'ywaAmKPVBjAmbfHCEx', // generated ethereal password
             },
           });
         
           const msg = {
-            from: '"The File Server" <info@fileserver.com>', // sender address
+            from: '"The Access Key Manager" <info@accesskeymanager.com>', // sender address
             to: `${email}`, // list of receivers
             subject: "Reset Password", // Subject line
-            text: `Dear ${row.username}, \nPlease copy and paste the link below into your browser in order to rest your password\nhttps://asdyyu.herokuapp.com/templates/resetpassword.html?email=${email}\nThank you`, // plain text body
+            text: `Dear ${row.email}, \nPlease copy and paste the link below into your browser in order to rest your password\n/resetpassword.html?email=${email}\nThank you`, // plain text body
             
           };
           // send mail with defined transport object
@@ -149,7 +149,7 @@ app.post('/forgotPassword', async (req, res) => {
 
   //Get All keys
 app.get('/allkeys', async (req, res) => {
-  const query = `SELECT userId, email, expiry_Date, keyStatus FROM users INNER JOIN keys
+  const query = `SELECT keyId, userId, email, keyValue, purchase_Date, expiry_Date, keyStatus FROM users INNER JOIN keys
   ON users.userId = keys.purchasedBy;`;
 
   await db.all(query, (err, rows) => {
@@ -163,7 +163,41 @@ app.get('/allkeys', async (req, res) => {
 
 
 // revoke key
-  app.post('/revokeKey', async (req, res) => {});
+  app.post('/revokeKey', async (req, res) => {
+    const { keyId, email } = req.body;
+    console.log(keyId);
+
+    const query = `UPDATE keys SET password = "revoked" WHERE keyId = "${keyId}"`;
+
+    await db.run(query, (err) => {
+      if (err) return console.err(err.message);
+      console.log('key is revoked');
+      res.json('key revoked');
+  })
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'melba.ratke71@ethereal.email', // generated ethereal user
+      pass: 'ywaAmKPVBjAmbfHCEx', // generated ethereal password
+    },
+  });
+
+  const msg = {
+    from: '"Access key manager" <info@fileserver.com>', // sender address
+    to: `${email}`, // list of receivers
+    subject: "Key Revoked", // Subject line
+    text: `Your key with ID ${keyId} is revoked`, // plain text body
+    attachments: null
+  };
+  // send mail 
+  await transporter.sendMail(msg, async (err, info) => {
+    if (err) console.error(err.message);
+  });
+
+})
 
 
 
