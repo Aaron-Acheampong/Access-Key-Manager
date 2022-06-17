@@ -48,7 +48,37 @@ function getParamenter(parameterName) {
 }
 
 
-var keyList =[];
+// revoke func
+function handleRevoke(id, email) {
+
+    let keyInfo = {
+        keyId: id,
+        email: email
+    };
+
+    console.log(keyInfo);
+
+    $.ajax({
+        url: '/revokeKey',
+        type: 'POST',
+        data: JSON.stringify(keyInfo),
+        dataType: 'json',
+        contentType: "application/json",
+        success: (result) => {
+            console.log(result);
+            if(result) alert(`Key with ID ${id} is revoked`);
+           
+        },
+        error: (err) => {
+            console.log(err);
+        }
+
+    });
+}
+
+
+
+const keyList ='';
 
 
 
@@ -64,7 +94,7 @@ $(document).ready(function () {
     if (userRole === 'admin'){
         // $("#show_modal_btn").css("display") = "block";
         // document.getElementById("show_modal_btn").style.display = "block";
-        $("#serach_form").css("display","block");
+        $("#search_form").css("display","block");
 
     }
     // else {
@@ -152,8 +182,10 @@ $('#search_btn').click(function (e) {
 $('#active').click(function (e) {
     e.preventDefault();
 
+    let table = $('#contain-table');
+    table.remove();
     let grid = $('#grid');
-    let gridContent = `<div className='contain-table'>
+    let gridContent = `<div id='contain-table'>
     <table className='striped-table'>
         <thead>
             <tr>
@@ -173,33 +205,34 @@ $('#active').click(function (e) {
             ${keyList.length > 0  ? (
                 keyList.map((keyItem, i) => (
                     keyItem.keyStatus === 'active' ? 
-                    `<tr key={keyItem.keyId}>
-                        <td>{i + 1}</td>
-                        <td>{keyItem.keyId}</td>
-                        <td>{keyItem.userId}</td>
-                        <td>{keyItem.email}</td>
-                        <td>{keyItem.keyValue}</td>
-                        <td>{keyItem.expiry_Date}</td>
-                        <td>{keyItem.keyStatus}</td>
+                    `<tr key=${keyItem.keyId}>
+                        <td>${i + 1}</td>
+                        <td>${keyItem.keyId}</td>
+                        <td>${keyItem.userId}</td>
+                        <td>${keyItem.email}</td>
+                        <td>${keyItem.keyValue}</td>
+                        <td>${keyItem.expiry_Date}</td>
+                        <td>${keyItem.keyStatus}</td>
                         <td className='text-left'>
                             <button 
-                                onClick={() => handleRevoke(keyItem.keyId)}
+                                onClick=${() => handleRevoke(keyItem.keyId, keyItem.email)}
                                 className='button muted-button'
                             >Revoke key</button>
                         </td>
                     </tr>` : null
                 ))
             ) : (
-                <tr>
+                `<tr>
                     <td colSpan={7}>No keyItems</td>
-                </tr>
+                </tr>`
             )}
         </tbody>
     </table>
 </div>`;
 
-   
+    table.remove();
     grid.append(gridContent);
+    
 });
 
 
@@ -207,8 +240,11 @@ $('#active').click(function (e) {
 $('#expired').click(function (e) {
     e.preventDefault();
 
+    
+    let table = $('#contain-table');
+    table.remove();
     let grid = $('#grid');
-    let gridContent = `<div className='contain-table'>
+    let gridContent = `<div id='contain-table'>
     <table className='striped-table'>
         <thead>
             <tr>
@@ -219,33 +255,33 @@ $('#expired').click(function (e) {
                 <th>Key Value</th>
                 <th>Purchase Date</th>
                 <th>Expiry Date</th>
+                <td>Status</td>
             </tr>
         </thead>
         <tbody>
             ${keyList.length > 0  ? (
                 keyList.map((keyItem, i) => (
                     keyItem.keyStatus === 'expired' ? 
-                    `<tr key={keyItem.keyId}>
-                        <td>{i + 1}</td>
-                        <td>{keyItem.keyId}</td>
-                        <td>{keyItem.userId}</td>
-                        <td>{keyItem.email}</td>
-                        <td>{keyItem.keyValue}</td>
-                        <td>{keyItem.expiry_Date}</td>
-                        <td>{keyItem.keyStatus}</td>
+                    `<tr key=${keyItem.keyId}>
+                        <td>${i + 1}</td>
+                        <td>${keyItem.keyId}</td>
+                        <td>${keyItem.userId}</td>
+                        <td>${keyItem.email}</td>
+                        <td>${keyItem.keyValue}</td>
+                        <td>${keyItem.expiry_Date}</td>
+                        <td>${keyItem.keyStatus}</td>
                         </td>
                     </tr>` : null
                 ))
             ) : (
-                <tr>
+                `<tr>
                     <td colSpan={7}>No keyItems</td>
-                </tr>
+                </tr>`
             )}
         </tbody>
     </table>
 </div>`;
 
-   
     grid.append(gridContent);
     
 });
@@ -255,8 +291,10 @@ $('#expired').click(function (e) {
 $('#revoked').click(function (e) {
     e.preventDefault();
 
+    let table = $('#contain-table');
+    table.remove();
     let grid = $('#grid');
-    let gridContent = `<div className='contain-table'>
+    let gridContent = `<div id='contain-table'>
     <table className='striped-table'>
         <thead>
             <tr>
@@ -274,22 +312,22 @@ $('#revoked').click(function (e) {
             ${keyList.length > 0  ? (
                 keyList.map((keyItem, i) => (
                     keyItem.keyStatus === 'revoked' ? 
-                    `<tr key={keyItem.keyId}>
-                        <td>{i + 1}</td>
-                        <td>{keyItem.keyId}</td>
-                        <td>{keyItem.userId}</td>
-                        <td>{keyItem.email}</td>
-                        <td>{keyItem.keyValue}</td>
-                        <td>{keyItem.purchase_Date}</td>
-                        <td>{keyItem.expiry_Date}</td>
-                        <td>{keyItem.keyStatus}</td>
+                    `<tr key=${keyItem.keyId}>
+                        <td>${i + 1}</td>
+                        <td>${keyItem.keyId}</td>
+                        <td>${keyItem.userId}</td>
+                        <td>${keyItem.email}</td>
+                        <td>${keyItem.keyValue}</td>
+                        <td>${keyItem.purchase_Date}</td>
+                        <td>${keyItem.expiry_Date}</td>
+                        <td>${keyItem.keyStatus}</td>
                         </td>
                     </tr>` : null
                 ))
             ) : (
-                <tr>
+               ` <tr>
                     <td colSpan={7}>No keyItems</td>
-                </tr>
+                </tr>`
             )}
         </tbody>
     </table>
@@ -298,34 +336,9 @@ $('#revoked').click(function (e) {
    
     grid.append(gridContent);
     
+    
 });
 
-function handleRevoke(id, email) {
-
-    let keyInfo = {
-        keyId: id,
-        email: email
-    };
-
-    console.log(keyInfo);
-
-    $.ajax({
-        url: '/revokeKey',
-        type: 'POST',
-        data: JSON.stringify(keyInfo),
-        dataType: 'json',
-        contentType: "application/json",
-        success: (result) => {
-            console.log(result);
-            if(result) alert(`Key with ID ${id} is revoked`);
-           
-        },
-        error: (err) => {
-            console.log(err);
-        }
-
-    });
-}
 
 
 
