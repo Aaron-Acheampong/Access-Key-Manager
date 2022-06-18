@@ -1,10 +1,16 @@
 const sqlite3 = require('sqlite3').verbose(); 
 
-const db = new sqlite3.Database("./accessKeys.db", sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database("./models/Keys.db", sqlite3.OPEN_READWRITE, (err) => {
     if(err) return console.error(err.message);
 
     console.log("Database connection successful");
 })
+
+
+//db.run('CREATE TABLE users ("userId"	INTEGER NOT NULL, "email"	TEXT NOT NULL, "password"	DATETIME NOT NULL, "userRole" TEXT, PRIMARY KEY("userId" AUTOINCREMENT))');
+
+//db.run ('INSERT INTO Keys (email, pasword, userRole) VALUES ("aronzy.as@gmail.com", datetime("2022-03-02 12:23:30"), "admin")');
+
  //Create users table
  //db.run('CREATE TABLE users ("userId"	INTEGER NOT NULL, "email"	TEXT,"password"	TEXT, "userRole" TEXT, PRIMARY KEY("userId" AUTOINCREMENT))');
 
@@ -30,9 +36,9 @@ const db = new sqlite3.Database("./accessKeys.db", sqlite3.OPEN_READWRITE, (err)
    //  })
 // } )
 
- db.close((err) => {
-     if (err) return console.error(err.message);
- })
+ //db.close((err) => {
+  //   if (err) return console.error(err.message);
+ //})
 
 
 

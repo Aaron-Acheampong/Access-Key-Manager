@@ -22,7 +22,7 @@ $("#reset_password_btn").click((e) => {
         }
         console.log(resetInfo);
             $.ajax({
-        url: 'https://fileserverapi.herokuapp.com/resetPassword',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/resetPassword',
         type: 'POST',
         data: JSON.stringify(resetInfo),
         dataType: 'json',

@@ -7,7 +7,7 @@ $("#sign_up").click((e) => {
     }
     // console.log(signupInfo);
     $.ajax({
-        url: '/signUp',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/signUp',
         type: 'POST',
         data: JSON.stringify(signupInfo),
         dataType: 'json',

@@ -59,7 +59,7 @@ function handleRevoke(id, email) {
     console.log(keyInfo);
 
     $.ajax({
-        url: '/revokeKey',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/revokeKey',
         type: 'POST',
         data: JSON.stringify(keyInfo),
         dataType: 'json',
@@ -101,7 +101,7 @@ $(document).ready(function () {
         
     // }
     $.ajax({
-        url: '/allkeys',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/allkeys',
         type: 'GET',
         success: function(rows) {
             if (userRole === 'admin') {
@@ -128,7 +128,7 @@ $('#keypurchaseform').submit(function (e) {
     }
 
     $.ajax({
-        url: '/purchaseKey',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/purchaseKey',
         type: 'POST',
         data: JSON.stringify(purchaseInfo),
         dataType: 'json',
@@ -153,7 +153,7 @@ $('#search_btn').click(function (e) {
         email: $('#search_input').val()
     }
     $.ajax({
-        url: '/keySearch',
+        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/keySearch',
         type: 'GET',
         data: JSON.stringify(keyInfo),
         dataType: 'json',
