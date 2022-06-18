@@ -30,7 +30,7 @@ async function signUp(req, res) {
         from: '"Access key manager" <info@fileserver.com>', // sender address
         to: `${email}`, // list of receivers
         subject: "Signup: email verification", // Subject line
-        text: `Dear ${row.email}, \nPlease copy and paste the link below into your browser in order to signup\n/index.html\nThank you`, // plain text body
+        text: `Dear ${email}, \nPlease copy and paste the link below into your browser in order to signup\n/index.html\nThank you`, // plain text body
         attachments: null
       };
       // send mail 

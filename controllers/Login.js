@@ -5,7 +5,7 @@ async function login(req, res) {
 
     console.log(email, password);
 
-    const query = `SELECT * FROM users WHERE email = "${email}" AND password = "${password}" `;
+    const query = `SELECT * FROM USERS WHERE email = "${email}" AND password = "${password}" `;
 
     await db.all(query, (err, rows) => {
       if(err) return console.error(err.message);

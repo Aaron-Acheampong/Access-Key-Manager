@@ -7,13 +7,13 @@ $("#sign_up").click((e) => {
     }
     // console.log(signupInfo);
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/signUp',
+        url: '/signUp',
         type: 'POST',
         data: JSON.stringify(signupInfo),
         dataType: 'json',
         contentType: "application/json",
         success: (users) => {
-            window.location.href = `/views/index.html`;
+            window.location.href = `/index.html`;
             alert("Account Created. You can now login");
             
             // console.log(result);

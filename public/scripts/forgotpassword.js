@@ -8,7 +8,7 @@ $("#forgotPassword_btn").click((e) => {
     console.log(forgotInfo);
     // console.log(loginInfo);
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/forgotPassword',
+        url: '/forgotPassword',
         type: 'POST',
         data: JSON.stringify(forgotInfo),
         dataType: 'json',

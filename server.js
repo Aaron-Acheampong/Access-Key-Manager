@@ -20,6 +20,7 @@ const port = process.env.PORT || 8080;
 
 app.use(  cors({  origin: "*" }) );
 app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname + '/views')));
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true}));
 
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname + '/views/index.html'));
+  res.status(200).sendFile(path.join(__dirname + '/index.html'));
 });
 
 

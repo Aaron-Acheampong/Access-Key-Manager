@@ -5,7 +5,7 @@ async function forgotPassword(req, res) {
     const {email} = req.body;
     console.log(email);
   
-    const query = `SELECT * FROM users WHERE email = "${email}"`;
+    const query = `SELECT * FROM USERS WHERE email = "${email}"`;
   
     await db.all(query, async (err, rows) => {
       if(err) return console.error(err.message);
@@ -16,7 +16,7 @@ async function forgotPassword(req, res) {
       }else{
                         
           rows.forEach(async row => {
-            console.log(row.username);
+            console.log(row.email);
           
   
           let transporter = nodemailer.createTransport({

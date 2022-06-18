@@ -59,7 +59,7 @@ function handleRevoke(id, email) {
     console.log(keyInfo);
 
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/revokeKey',
+        url: '/revokeKey',
         type: 'POST',
         data: JSON.stringify(keyInfo),
         dataType: 'json',
@@ -97,11 +97,11 @@ $(document).ready(function () {
         $("#search_form").css("display","block");
 
     }
-    // else {
-        
-    // }
+    else {
+        $("#search_form").css("display","none");
+     }
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/allkeys',
+        url: '/allkeys',
         type: 'GET',
         success: function(rows) {
             if (userRole === 'admin') {
@@ -128,7 +128,7 @@ $('#keypurchaseform').submit(function (e) {
     }
 
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/purchaseKey',
+        url: '/purchaseKey',
         type: 'POST',
         data: JSON.stringify(purchaseInfo),
         dataType: 'json',
@@ -153,7 +153,7 @@ $('#search_btn').click(function (e) {
         email: $('#search_input').val()
     }
     $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/keySearch',
+        url: '/SearchKey',
         type: 'GET',
         data: JSON.stringify(keyInfo),
         dataType: 'json',
@@ -165,7 +165,8 @@ $('#search_btn').click(function (e) {
                var activeKey = rows.filter((row) => {
                 return row.keyStatus === "active";
                });
-               alert(`Status Code: 200.\n ${activeKey}`);
+
+               alert(`Status Code: 200.\n ${JSON.stringify(activeKey)}`);
             }else{
                 alert("Status Code: 404.\n User has no active Key");
             }

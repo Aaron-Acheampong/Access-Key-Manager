@@ -5,7 +5,7 @@ async function revokeKey(req, res) {
     const { keyId, email } = req.body;
     console.log(keyId);
 
-    const query = `UPDATE keys SET password = "revoked" WHERE keyId = "${keyId}"`;
+    const query = `UPDATE KEYS SET password = "revoked" WHERE keyId = "${keyId}"`;
 
     await db.run(query, (err) => {
       if (err) return console.err(err.message);

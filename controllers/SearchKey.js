@@ -3,7 +3,7 @@ const db = require('../models/dbConnection');
 async function searchKey(req, res) {
     const {email} = req.body;
     console.log(email);
-    var UserId = '';
+    let UserId = '';
     const query1 = `SELECT * FROM users WHERE title LIKE "%${email}%"`;
     await db.run(query1, (err, user) => {
         if(err) return console.error(err.message);

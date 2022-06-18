@@ -22,13 +22,13 @@ $("#reset_password_btn").click((e) => {
         }
         console.log(resetInfo);
             $.ajax({
-        url: 'C:\Users\TECHNICAL\Desktop\C++Dev\JS\Access-Key-Manager/resetPassword',
+        url: '/resetPassword',
         type: 'POST',
         data: JSON.stringify(resetInfo),
         dataType: 'json',
         contentType: "application/json",
         success: (users) => {
-            window.location.href = `https://fileserver-amalitech.herokuapp.com/index.html`;
+            window.location.href = `/index.html`;
             alert("Password Reset Successful. You can now login");
             
         },
