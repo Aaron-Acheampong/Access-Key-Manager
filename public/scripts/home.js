@@ -78,7 +78,7 @@ function handleRevoke(id, email) {
 
 
 
-const keyList ='';
+var keyList ='';
 
 
 
@@ -94,7 +94,7 @@ $(document).ready(function () {
     if (userRole === 'admin'){
         // $("#show_modal_btn").css("display") = "block";
         // document.getElementById("show_modal_btn").style.display = "block";
-        $("#search_form").css("display","block");
+        $("#search_section").css("display","block");
 
     }
     else {
@@ -121,11 +121,54 @@ $(document).ready(function () {
 });
 
 
+///deal with purhase
+const stripeHandler = StripeCheckout.configure({
+    key: 'pk_test_51LCZP7A0bcxwy1Smv7LtXe98et3CMGaDWKK9HEK3CNG1Ra2ym2sM5tVHg3RRl6bY8p7RCKBspahcOTDQeLJ1pcU3005UEgL97W',
+    locale: 'en',
+    token: function(token) {
+        let purchaseInfo = {
+            stripeTokenId: token.id,
+            expiry_Date: `${token.card.exp_year}-${token.card.exp_month}-01 23:59:00`,
+            email: token.email
+        }
+
+        $.ajax({
+            url: '/purchaseKey',
+            type: 'POST',
+            data: JSON.stringify(purchaseInfo),
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(key) {
+                console.log("Key Generated");
+                alert("Thamk you for your purchase. \n Key has been generated and sent to your email");
+    
+    
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+
+   
+
+});
+
+function purchaseClicked() {
+    let price = 100;
+    stripeHandler.open({
+        amount: price
+    })
+}
+
+/*
+
 $('#keypurchaseform').submit(function (e) {
     e.preventDefault();
     let purchaseInfo = {
         search: $('#search_input').val()
     }
+   
 
     $.ajax({
         url: '/purchaseKey',
@@ -135,7 +178,7 @@ $('#keypurchaseform').submit(function (e) {
         contentType: "application/json",
         success: function(key) {
             console.log("Key Generated");
-            alert("Key has been generated and sent to your email");
+            alert("Thamk you for your purchase. \n Key has been generated and sent to your email");
 
 
         },
@@ -144,7 +187,7 @@ $('#keypurchaseform').submit(function (e) {
         }
     })
 
-});
+}); */
 
 
 $('#search_btn').click(function (e) {

@@ -1,4 +1,4 @@
-# File Server
+# ACCESS KEY MANAGER
 > Creating a site for distribution of documents.
 > Live demo [_here_](https://accesskeymanager.herokuapp.com/). <!-- If you have the project hosted somewhere, include the link here. -->
 
@@ -22,6 +22,7 @@
 - SQlite 
 - heroku
 - smtp.ethereal.email
+- Stripe
 
 
 

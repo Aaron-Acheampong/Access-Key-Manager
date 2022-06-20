@@ -5,7 +5,12 @@ const resetPassword = require('./controllers/ResetPassword');
 const searchKey = require('./controllers/SearchKey');
 const revokeKey = require('./controllers/RevokeKey');
 const allKeys = require('./controllers/AllKeys');
+const purchaseKey = require('./controllers/PurchaseKey');
 
+
+require('dotenv').config();
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
 
 const express = require('express');
 const app = express();
@@ -16,9 +21,12 @@ const path= require('path');
 const fs  = require('fs');
 const db = require('./models/dbConnection');
 
+//const stripe = require('stripe')(stripeSecretKey);
+//const uuidAPIKey = require('uuid-apikey');
+
 const port = process.env.PORT || 8080;
 
-app.use(  cors({  origin: "*" }) );
+//app.use(  cors({  origin: "*" }) );
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.static(path.join(__dirname + '/views')));
 app.use(express.json()); 
@@ -56,6 +64,10 @@ app.post('/forgotPassword', forgotPassword);
   app.get('/searchKey', searchKey);
 
 
+  //purchase Key
+  app.post('/purchaseKey', purchaseKey);
+
+
 
   //Get All keys
 app.get('/allkeys', allKeys);
@@ -71,6 +83,7 @@ app.get('/allkeys', allKeys);
 
 const setup = async () => {
   await db.run('UPDATE KEYS SET keyStatus = "active" WHERE expiry_Date > purchase_Date');
+  //console.log(uuidAPIKey.create('asaacheampong'));
 
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`)
