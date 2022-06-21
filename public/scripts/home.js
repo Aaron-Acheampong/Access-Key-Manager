@@ -12,6 +12,7 @@ document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', 
 }))
 
 
+
 function changeBg(button){
     if(button.id == "active"){
         button.style.background = "white";
@@ -41,75 +42,80 @@ function closeModal() {
     document.getElementById("overlay").style.display = "none";
 }
 
-//get URL query parameters
-function getParamenter(parameterName) {
-    let parameters = new URLSearchParams(window.location.search);
-    return parameters.get(parameterName);
-}
 
 
 // revoke func
 function handleRevoke(id, email) {
 
-    let keyInfo = {
-        keyId: id,
-        email: email
-    };
+    const parameters = new URLSearchParams(window.location.search);
+    const userRole = parameters.get('userRole'); 
 
-    console.log(keyInfo);
+    if (userRole !== 'admin') {
+        alert('Only admin can revoke a key');
+    } else {
 
-    $.ajax({
-        url: '/revokeKey',
-        type: 'POST',
-        data: JSON.stringify(keyInfo),
-        dataType: 'json',
-        contentType: "application/json",
-        success: (result) => {
-            console.log(result);
-            if(result) alert(`Key with ID ${id} is revoked`);
-           
-        },
-        error: (err) => {
-            console.log(err);
-        }
+        let keyInfo = {
+            id: id,
+            email: email
+        };
+    
+        
+    
+        $.ajax({
+            url: '/revokeKey',
+            type: 'POST',
+            data: JSON.stringify(keyInfo),
+            dataType: 'json',
+            contentType: "application/json",
+            success: (result) => {
+                console.log(result);
+                if(result) alert(`Key with ID ${keyInfo.id} is revoked`);
+               
+            },
+            error: (err) => {
+                console.log(err);
+            }
+    
+        });
+    }
 
-    });
+    
 }
 
 
 
-var keyList ='';
+var keyList = '';
 
 
 
 // Get all files
 $(document).ready(function () {
-    
 
-    let userRole = getParamenter('userRole'); 
-    let userEmail = getParamenter('userEmail'); 
+    //get URL query parameters
+    const parameters = new URLSearchParams(window.location.search);
+    const userRole = parameters.get('userRole'); 
+    const userEmail = parameters.get('userEmail'); 
 
     console.log(userRole);
-    // console.log(userId);
-    if (userRole === 'admin'){
-        // $("#show_modal_btn").css("display") = "block";
-        // document.getElementById("show_modal_btn").style.display = "block";
-        $("#search_section").css("display","block");
+    if (userRole !== 'admin'){
+        $("#search_section").css("display","none");
 
     }
-    else {
-        $("#search_form").css("display","none");
-     }
+   
     $.ajax({
         url: '/allkeys',
         type: 'GET',
         success: function(rows) {
             if (userRole === 'admin') {
-                keyList = rows;
+               keyList = rows;
+               console.log(keyList);
             } else {
                 keyList = rows.filter((row) => {
                     row.email === userEmail;
                 })
+
+                console.log(keyList);
+            
             }
             
 
@@ -139,9 +145,14 @@ const stripeHandler = StripeCheckout.configure({
             dataType: 'json',
             contentType: "application/json",
             success: function(key) {
-                console.log("Key Generated");
+                if(key.keystate === 'Exist') {
+                    console.log("User has active key");
+                alert("User already has an active key");
+                } else {
+                    console.log("Key Generated");
                 alert("Thamk you for your purchase. \n Key has been generated and sent to your email");
-    
+                }
+        
     
             },
             error: function (err) {
@@ -161,35 +172,9 @@ function purchaseClicked() {
     })
 }
 
-/*
-
-$('#keypurchaseform').submit(function (e) {
-    e.preventDefault();
-    let purchaseInfo = {
-        search: $('#search_input').val()
-    }
-   
-
-    $.ajax({
-        url: '/purchaseKey',
-        type: 'POST',
-        data: JSON.stringify(purchaseInfo),
-        dataType: 'json',
-        contentType: "application/json",
-        success: function(key) {
-            console.log("Key Generated");
-            alert("Thamk you for your purchase. \n Key has been generated and sent to your email");
 
 
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    })
-
-}); */
-
-
+//Search EndPoint
 $('#search_btn').click(function (e) {
     e.preventDefault();
     let keyInfo = {
@@ -223,6 +208,7 @@ $('#search_btn').click(function (e) {
 
 
 
+//Active Keys
 $('#active').click(function (e) {
     e.preventDefault();
 
@@ -235,10 +221,8 @@ $('#active').click(function (e) {
             <tr>
                 <th>No.</th>
                 <th>Key ID</th>
-                <th>User ID</th>
                 <th>Email</th>
                 <th>Key Value</th>
-                <th>Purchase Date</th>
                 <th>Expiry Date</th>
                 <th colSpan={1} className='text-center'>
                     Actions
@@ -249,17 +233,17 @@ $('#active').click(function (e) {
             ${keyList.length > 0  ? (
                 keyList.map((keyItem, i) => (
                     keyItem.keyStatus === 'active' ? 
-                    `<tr key=${keyItem.keyId}>
+                    `<tr key='${keyItem.keyId}'>
                         <td>${i + 1}</td>
                         <td>${keyItem.keyId}</td>
-                        <td>${keyItem.userId}</td>
-                        <td>${keyItem.email}</td>
+                        <td>${keyItem.purchasedBy}</td>
                         <td>${keyItem.keyValue}</td>
                         <td>${keyItem.expiry_Date}</td>
-                        <td>${keyItem.keyStatus}</td>
                         <td className='text-left'>
                             <button 
-                                onClick=${() => handleRevoke(keyItem.keyId, keyItem.email)}
+                                id='${keyItem.keyId}'
+                                key='${keyItem.purchasedBy}'
+                                onClick='handleRevoke(this.id, this.key)'
                                 className='button muted-button'
                             >Revoke key</button>
                         </td>
@@ -281,6 +265,9 @@ $('#active').click(function (e) {
 
 
 
+
+//
+//Expired Keys
 $('#expired').click(function (e) {
     e.preventDefault();
 
@@ -294,12 +281,9 @@ $('#expired').click(function (e) {
             <tr>
                 <th>No.</th>
                 <th>Key ID</th>
-                <th>User ID</th>
                 <th>Email</th>
                 <th>Key Value</th>
-                <th>Purchase Date</th>
                 <th>Expiry Date</th>
-                <td>Status</td>
             </tr>
         </thead>
         <tbody>
@@ -309,12 +293,9 @@ $('#expired').click(function (e) {
                     `<tr key=${keyItem.keyId}>
                         <td>${i + 1}</td>
                         <td>${keyItem.keyId}</td>
-                        <td>${keyItem.userId}</td>
-                        <td>${keyItem.email}</td>
+                        <td>${keyItem.purchasedBy}</td>
                         <td>${keyItem.keyValue}</td>
                         <td>${keyItem.expiry_Date}</td>
-                        <td>${keyItem.keyStatus}</td>
-                        </td>
                     </tr>` : null
                 ))
             ) : (
@@ -331,7 +312,8 @@ $('#expired').click(function (e) {
 });
 
 
-
+//
+//Revoked Keys
 $('#revoked').click(function (e) {
     e.preventDefault();
 
@@ -344,12 +326,10 @@ $('#revoked').click(function (e) {
             <tr>
                 <th>No.</th>
                 <th>Key ID</th>
-                <th>User ID</th>
                 <th>Email</th>
                 <th>Key Value</th>
                 <th>Purchase Date</th>
                 <th>Expiry Date</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -359,13 +339,10 @@ $('#revoked').click(function (e) {
                     `<tr key=${keyItem.keyId}>
                         <td>${i + 1}</td>
                         <td>${keyItem.keyId}</td>
-                        <td>${keyItem.userId}</td>
-                        <td>${keyItem.email}</td>
+                        <td>${keyItem.purchasedBy}</td>
                         <td>${keyItem.keyValue}</td>
                         <td>${keyItem.purchase_Date}</td>
-                        <td>${keyItem.expiry_Date}</td>
-                        <td>${keyItem.keyStatus}</td>
-                        </td>
+                        <td>${keyItem.expiry_Date}</td>                 
                     </tr>` : null
                 ))
             ) : (

@@ -2,15 +2,15 @@ const db = require('../models/dbConnection');
 const nodemailer = require("nodemailer");
 
 async function revokeKey(req, res) {
-    const { keyId, email } = req.body;
-    console.log(keyId);
+    const { id, email } = req.body;
+    console.log(id);
 
-    const query = `UPDATE KEYS SET password = "revoked" WHERE keyId = "${keyId}"`;
+    const query = `UPDATE KEYS SET keyStatus = "revoked" WHERE keyId = "${id}"`;
 
     await db.run(query, (err) => {
-      if (err) return console.err(err.message);
+      if (err) return console.log(err.message);
       console.log('key is revoked');
-      res.json('key revoked');
+      res.json({id: id});
   })
 
   let transporter = nodemailer.createTransport({
@@ -27,7 +27,7 @@ async function revokeKey(req, res) {
     from: '"Access key manager" <info@fileserver.com>', // sender address
     to: `${email}`, // list of receivers
     subject: "Key Revoked", // Subject line
-    text: `Your key with ID ${keyId} is revoked`, // plain text body
+    text: `Your key with ID ${id} is revoked`, // plain text body
     attachments: null
   };
   // send mail 

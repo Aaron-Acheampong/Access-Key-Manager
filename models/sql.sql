@@ -13,8 +13,9 @@ purchasedBy	INTEGER NOT NULL, keyStatus TEXT  ,
 --VALUES ("asaacheampong", CURRENT_TIMESTAMP, '2022-10-5 12:30:00', 'aronzy.as@gmail.com');
 
 SELECT * FROM USERS;
---SELECT * FROM KEYS;
-
+SELECT * FROM KEYS;
+--SELECT * FROM KEYS WHERE purchasedBy = "aaron.acheampong@amalitech.org" AND keyStatus = "active"
+--SELECT * FROM KEYS WHERE purchasedBy = "aronzy.as@gmail.com" AND keyStatus = "active"
 --SELECT 	purchase_Date, expiry_Date FROM KEYS;
 
 --DROP TABLE KEYS;

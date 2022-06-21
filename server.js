@@ -82,7 +82,7 @@ app.get('/allkeys', allKeys);
 
 
 const setup = async () => {
-  await db.run('UPDATE KEYS SET keyStatus = "active" WHERE expiry_Date > purchase_Date');
+  await db.run('UPDATE KEYS SET keyStatus = "active" WHERE expiry_Date > purchase_Date AND keyStatus IS NOT "revoked"');
   //console.log(uuidAPIKey.create('asaacheampong'));
 
   app.listen(port, () => {
