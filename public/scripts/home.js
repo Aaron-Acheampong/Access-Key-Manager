@@ -99,6 +99,7 @@ $(document).ready(function () {
     console.log(userRole);
     if (userRole !== 'admin'){
         $("#search_section").css("display","none");
+        $(".revoke_button").css("display","none");
 
     }
    
@@ -241,10 +242,10 @@ $('#active').click(function (e) {
                         <td>${keyItem.expiry_Date}</td>
                         <td className='text-left'>
                             <button 
+                                class='revoke_button'
                                 id='${keyItem.keyId}'
                                 key='${keyItem.purchasedBy}'
                                 onClick='handleRevoke(this.id, this.key)'
-                                className='button muted-button'
                             >Revoke key</button>
                         </td>
                     </tr>` : null

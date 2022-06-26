@@ -9,8 +9,17 @@ async function login(req, res) {
 
     await db.all(query, (err, rows) => {
       if(err) return console.error(err.message);
-          console.log(rows);
-          res.json(rows);
+
+      req.session.authenticated = true;
+      // Add the user object below:
+      req.session.user= {
+        email,
+        password,
+      };
+
+      console.log(rows);
+      console.log(req.session);
+      res.json(rows);
 
   });
 }

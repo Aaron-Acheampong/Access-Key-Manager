@@ -20,11 +20,34 @@ const cors = require("cors");
 const path= require('path');
 const fs  = require('fs');
 const db = require('./models/dbConnection');
+const session = require("express-session");
 
 //const stripe = require('stripe')(stripeSecretKey);
 //const uuidAPIKey = require('uuid-apikey');
 
 const port = process.env.PORT || 8080;
+const store = new session.MemoryStore();
+
+app.use(
+  session({
+    secret: "D53gxl41G",
+    // Add the cookie property below:
+    cookie: { maxAge: 172800000, secure: true, sameSite: "none" },
+    resave: false,
+    saveUninitialized: false,
+    store
+  })
+);
+
+function ensureAuthentication(req, res, next) {
+  console.log(req.session.authenticated);
+  // Complete the if statmenet below:
+  if (req.session.authenticated) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
 
 //app.use(  cors({  origin: "*" }) );
 app.use(express.static(path.join(__dirname + '/public')));
@@ -37,6 +60,10 @@ app.use((req, res, next) => {
 
   next();
 });
+
+//app.use('/allKeys', ensureAuthentication);
+//app.use('/searchKey', ensureAuthentication);
+//app.use('/purchaseKeys', ensureAuthentication);
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname + '/index.html'));
