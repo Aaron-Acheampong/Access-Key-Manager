@@ -109,11 +109,19 @@ app.get('/allkeys', allKeys);
 
 
 const setup = async () => {
-  await db.run('UPDATE KEYS SET keyStatus = "active" WHERE expiry_Date > purchase_Date AND keyStatus IS NOT "revoked"');
-  //console.log(uuidAPIKey.create('asaacheampong'));
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime2 = date+' '+time;
+
+  await db.run('UPDATE KEYS SET keyStatus = "active" WHERE expiry_Date > CURRENT_TIMESTAMP AND keyStatus IS NOT "revoked"');
+  
+  await db.run('UPDATE KEYS SET keyStatus = "expired" WHERE expiry_Date < CURRENT_TIMESTAMP AND keyStatus IS NOT "revoked"');
+  
+    //console.log(uuidAPIKey.create('asaacheampong'));
 
   app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`)
+    console.log(`Server is listening on port ${port} and ${dateTime2}`)
  });
 };
 
